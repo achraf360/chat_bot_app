@@ -83,7 +83,7 @@ class _ChatBotPageState extends State<ChatBotPage> {
                       ],
                     );*/
                     return Container(
-                      padding: EdgeInsets.only(
+                      padding: const EdgeInsets.only(
                           left: 14, right: 14, top: 10, bottom: 10),
                       child: Align(
                         alignment: (chatHistory[index]["isSender"]
@@ -104,7 +104,7 @@ class _ChatBotPageState extends State<ChatBotPage> {
                                 ? Color(0xFFF044C83)
                                 : Colors.white),
                           ),
-                          padding: EdgeInsets.all(16),
+                          padding: const EdgeInsets.all(16),
                           child: Text(chatHistory[index]["message"],
                               style: TextStyle(
                                   fontSize: 15,
@@ -125,6 +125,8 @@ class _ChatBotPageState extends State<ChatBotPage> {
                   child: TextFormField(
                     controller: queryController,
                     decoration: InputDecoration(
+                      hintText: "Message ChatBot",
+                      hintStyle: const TextStyle(color: Colors.black38),
                       filled: true,
                       fillColor: Colors.white,
                       suffixIcon: const Icon(Icons.textsms_outlined),
@@ -196,7 +198,7 @@ class _ChatBotPageState extends State<ChatBotPage> {
                       );
                       getAnswer();
                     },
-                    icon: Icon(Icons.send))
+                    icon: const Icon(Icons.send))
               ],
             ),
           ),
@@ -211,7 +213,9 @@ class _ChatBotPageState extends State<ChatBotPage> {
     final uri = Uri.parse(url);
     List<Map<String, String>> msg = [];
     for (var i = 0; i < chatHistory.length; i++) {
-      msg.add({"content": chatHistory[i]["message"]});
+      if (chatHistory != null && i < chatHistory.length) {
+        msg.add({"content": chatHistory[i]["message"]});
+      }
     }
 
     Map<String, dynamic> request = {
@@ -219,19 +223,19 @@ class _ChatBotPageState extends State<ChatBotPage> {
         "messages": [msg]
       },
       "temperature": 0.25,
-      "candidateCount": 1,
+      "candidateCount": 3,
       "topP": 1,
       "topK": 1
     };
 
     final responseBody = await http.post(uri, body: jsonEncode(request));
-    final llmResponse =
+    /*final llmResponse =
         json.decode(responseBody.body)["candidates"][0]["content"];
-    //print("resp : ${llmResponse}");
+    print("resp : ${llmResponse}");*/
     setState(() {
       chatHistory.add({
         "time": DateTime.now(),
-        "message": llmResponse,
+        "message": json.decode(responseBody.body)["candidates"][0]["content"],
         "isSender": false,
       });
     });

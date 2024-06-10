@@ -22,8 +22,15 @@ class HomePage extends StatelessWidget {
         height: 450,
         width: 400,
         decoration: BoxDecoration(
-          color: Theme.of(context).primaryColor,
-          borderRadius: BorderRadius.all(Radius.circular(15.0)),
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 2,
+              blurRadius: 5,
+              offset: const Offset(0, 3),
+            ),
+          ],
         ),
         child: Card(
           color: Colors.white,
@@ -42,6 +49,8 @@ class HomePage extends StatelessWidget {
                 TextFormField(
                   controller: loginController,
                   decoration: InputDecoration(
+                    hintText: "Username",
+                    hintStyle: const TextStyle(color: Colors.black38),
                     filled: true,
                     fillColor: Colors.white,
                     suffixIcon: const Icon(Icons.lock),
@@ -61,6 +70,8 @@ class HomePage extends StatelessWidget {
                   controller: passwordController,
                   obscureText: true,
                   decoration: InputDecoration(
+                    hintText: "Password",
+                    hintStyle: const TextStyle(color: Colors.black38),
                     filled: true,
                     fillColor: Colors.white,
                     suffixIcon: const Icon(Icons.visibility),
